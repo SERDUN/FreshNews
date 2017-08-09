@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.user.freshnews">
+
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -17,6 +18,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:name=".data.database.NewsProvider"
+            android:authorities="com.example.user.freshnews.data.database.ContractClass"
+            android:exported="false" />
+
+        <service
+            android:name=".data.database.NewsService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

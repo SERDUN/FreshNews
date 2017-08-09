@@ -74,4 +74,15 @@ public class News {
         this.publishedAt = publishedAt;
     }
 
+    @Override
+    public String toString() {
+        return "News{" +
+                "author=" + author +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", url='" + url + '\'' +
+                ", urlToImage='" + urlToImage + '\'' +
+                ", publishedAt='" + publishedAt + '\'' +
+                '}';
+    }
 }

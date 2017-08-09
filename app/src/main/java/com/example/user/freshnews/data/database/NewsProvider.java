@@ -33,8 +33,8 @@ public class NewsProvider extends ContentProvider {
 
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
-        uriMatcher.addURI(ContractClass.AUTHORITY, "students", NEWS);
-        uriMatcher.addURI(ContractClass.AUTHORITY, "students/#", NEWS_ID);
+        uriMatcher.addURI(ContractClass.AUTHORITY, "news", NEWS);
+        uriMatcher.addURI(ContractClass.AUTHORITY, "news/#", NEWS_ID);
 
         newsProjectionMap = new HashMap<String, String>();
         for (int i = 0; i < ContractClass.News.DEFAULT_PROJECTION.length; i++) {
@@ -55,6 +55,7 @@ public class NewsProvider extends ContentProvider {
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
         String orderBy = null;
+        ServiceHelper.startQueryService(getContext());
         switch (uriMatcher.match(uri)) {
             case NEWS:
                 qb.setTables(ContractClass.News.TABLE_NAME);
@@ -218,7 +219,7 @@ public class NewsProvider extends ContentProvider {
                         + KEY_NAME_PUBLISHED_AT + " string, "
                         + " UNIQUE ( " + KEY_NAME_DESCRIPTION + " ) ON CONFLICT IGNORE" + ");";
 
-        //// TODO: 09.08.2017  Change the data type KEY_NAME_PUBLISHED_AT from text to data
+        ////     TODO: 09.08.2017  Change the data type KEY_NAME_PUBLISHED_AT from text to data
 
         private Context ctx;
 
