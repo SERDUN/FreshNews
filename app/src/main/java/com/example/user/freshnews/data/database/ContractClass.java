@@ -4,7 +4,7 @@ import android.net.Uri;
 import android.provider.BaseColumns;
 
 /**
- * Created by User on 09.08.2017.
+ * Created by SERDUN on 09.08.2017.
  */
 
 public class ContractClass {

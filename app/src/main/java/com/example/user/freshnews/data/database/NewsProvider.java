@@ -1,12 +1,14 @@
 package com.example.user.freshnews.data.database;
 
 import android.content.ContentProvider;
+import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -14,11 +16,11 @@ import android.support.annotation.Nullable;
 import java.util.HashMap;
 
 /**
- * Created by User on 09.08.2017.
+ * Created by SERDUN on 09.08.2017.
  */
 
 public class NewsProvider extends ContentProvider {
-    //// TODO: 09.08.2017 create base abstract class 
+    //// TODO: 09.08.2017 create base abstract class
     private static final int DATABASE_VERSION = 1;
 
     private static HashMap<String, String> newsProjectionMap;
@@ -51,29 +53,146 @@ public class NewsProvider extends ContentProvider {
     @Nullable
     @Override
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
-        return null;
+        SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
+        String orderBy = null;
+        switch (uriMatcher.match(uri)) {
+            case NEWS:
+                qb.setTables(ContractClass.News.TABLE_NAME);
+                qb.setProjectionMap(newsProjectionMap);
+//                orderBy = ContractClass.News.DEFAULT_SORT_ORDER;
+                break;
+            case NEWS_ID:
+                qb.setTables(ContractClass.News.TABLE_NAME);
+                qb.setProjectionMap(newsProjectionMap);
+                qb.appendWhere(ContractClass.News._ID + "=" + uri.getPathSegments().get(ContractClass.News.NEWS_ID_PATH_POSITION));
+//                orderBy = ContractClass.News.DEFAULT_SORT_ORDER;
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown URI " + uri);
+        }
+
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        Cursor c = qb.query(db, projection, selection, selectionArgs, null, null, null);
+        c.setNotificationUri(getContext().getContentResolver(), uri);
+        return c;
     }
 
     @Nullable
     @Override
     public String getType(@NonNull Uri uri) {
-        return null;
+        switch (uriMatcher.match(uri)) {
+            case NEWS:
+                return ContractClass.News.CONTENT_TYPE;
+            case NEWS_ID:
+                return ContractClass.News.CONTENT_ITEM_TYPE;
+            default:
+                throw new IllegalArgumentException("Unknown URI " + uri);
+        }
     }
 
     @Nullable
     @Override
-    public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
-        return null;
+    public Uri insert(@NonNull Uri uri, @Nullable ContentValues newValues) {
+
+        if (uriMatcher.match(uri) != NEWS) {
+            throw new IllegalArgumentException("Unknown URI " + uri);
+        }
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values;
+        if (newValues != null) {
+            values = new ContentValues(newValues);
+        } else {
+            values = new ContentValues();
+        }
+        long rowId = -1;
+        Uri rowUri = Uri.EMPTY;
+
+        if (uriMatcher.match(uri) == NEWS) {
+            if (values.containsKey(ContractClass.News.COLUMN_NAME_AUTHOR) == false) {
+                values.put(ContractClass.News.COLUMN_NAME_AUTHOR, "");
+            }
+
+            if (values.containsKey(ContractClass.News.COLUMN_NAME_TITLE) == false) {
+                values.put(ContractClass.News.COLUMN_NAME_TITLE, "");
+            }
+
+            if (values.containsKey(ContractClass.News.COLUMN_NAME_DESCRIPTION) == false) {
+                values.put(ContractClass.News.COLUMN_NAME_DESCRIPTION, "");
+            }
+
+            if (values.containsKey(ContractClass.News.COLUMN_NAME_URL) == false) {
+                values.put(ContractClass.News.COLUMN_NAME_URL, "");
+            }
+
+            if (values.containsKey(ContractClass.News.COLUMN_NAME_URL_TO_IMAGE) == false) {
+                values.put(ContractClass.News.COLUMN_NAME_URL_TO_IMAGE, "");
+            }
+
+            if (values.containsKey(ContractClass.News.COLUMN_NAME_PUBLISHED_AT) == false) {
+                values.put(ContractClass.News.COLUMN_NAME_PUBLISHED_AT, "");
+            }
+
+
+            rowId = db.insert(ContractClass.News.TABLE_NAME, null, values);
+
+            if (rowId > 0) {
+                rowUri = ContentUris.withAppendedId(ContractClass.News.CONTENT_ID_URI_BASE, rowId);
+                getContext().getContentResolver().notifyChange(rowUri, null);
+            }
+        }
+
+
+        return rowUri;
     }
 
     @Override
-    public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
+    public int delete(@NonNull Uri uri, @Nullable String selection, @Nullable String[]
+            selectionArgs) {
+
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        String finalWhere;
+        int count;
+        switch (uriMatcher.match(uri)) {
+            case NEWS:
+                count = db.delete(ContractClass.News.TABLE_NAME, selection, selectionArgs);
+                break;
+            case NEWS_ID:
+                finalWhere = ContractClass.News._ID + " = " + uri.getPathSegments().get(ContractClass.News.NEWS_ID_PATH_POSITION);
+                if (selection != null) {
+                    finalWhere = finalWhere + " AND " + selection;
+                }
+                count = db.delete(ContractClass.News.TABLE_NAME, finalWhere, selectionArgs);
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown URI " + uri);
+        }
+        getContext().getContentResolver().notifyChange(uri, null);
+        return count;
     }
 
     @Override
-    public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
-        return 0;
+    public int update(Uri uri, ContentValues values, String where, String[] whereArgs) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        int count;
+        String finalWhere;
+        String id;
+        switch (uriMatcher.match(uri)) {
+            case NEWS:
+                count = db.update(ContractClass.News.TABLE_NAME, values, where, whereArgs);
+                break;
+            case NEWS_ID:
+                id = uri.getPathSegments().get(ContractClass.News.NEWS_ID_PATH_POSITION);
+                finalWhere = ContractClass.News._ID + " = " + id;
+                if (where != null) {
+                    finalWhere = finalWhere + " AND " + where;
+                }
+                count = db.update(ContractClass.News.TABLE_NAME, values, finalWhere, whereArgs);
+                break;
+            default:
+                throw new IllegalArgumentException("Unknown URI " + uri);
+        }
+        getContext().getContentResolver().notifyChange(uri, null);
+        return count;
     }
 
     private static class DatabaseHelper extends SQLiteOpenHelper {
