@@ -14,7 +14,15 @@
         android:layout_height="wrap_content"
         android:text="update" />
 
-    <android.support.v7.widget.CardView
+    <Button
+        android:id="@+id/btnAddNews"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="add news" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
 </LinearLayout>

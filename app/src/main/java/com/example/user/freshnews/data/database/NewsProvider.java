@@ -6,6 +6,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
@@ -27,6 +28,7 @@ public class NewsProvider extends ContentProvider {
 
     private static final int NEWS = 1;
     private static final int NEWS_ID = 2;
+    private static final int NEWS_SERVER = 3;
 
     private static final UriMatcher uriMatcher;
     private DatabaseHelper dbHelper;
@@ -34,6 +36,7 @@ public class NewsProvider extends ContentProvider {
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(ContractClass.AUTHORITY, "news", NEWS);
+        uriMatcher.addURI(ContractClass.AUTHORITY, "news/server", NEWS_SERVER);
         uriMatcher.addURI(ContractClass.AUTHORITY, "news/#", NEWS_ID);
 
         newsProjectionMap = new HashMap<String, String>();
@@ -55,8 +58,9 @@ public class NewsProvider extends ContentProvider {
     public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
         SQLiteQueryBuilder qb = new SQLiteQueryBuilder();
         String orderBy = null;
-        ServiceHelper.startQueryService(getContext());
         switch (uriMatcher.match(uri)) {
+            case NEWS_SERVER:
+                ServiceHelper.startQueryService(getContext());
             case NEWS:
                 qb.setTables(ContractClass.News.TABLE_NAME);
                 qb.setProjectionMap(newsProjectionMap);
@@ -89,6 +93,44 @@ public class NewsProvider extends ContentProvider {
             default:
                 throw new IllegalArgumentException("Unknown URI " + uri);
         }
+    }
+
+
+
+    @Override
+    public int bulkInsert(@NonNull Uri uri, @NonNull ContentValues[] values) {
+        if (uriMatcher.match(uri) != NEWS) {
+            throw new IllegalArgumentException("Unknown URI " + uri);
+        }
+        int nrInserted = 0;
+
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.beginTransaction();
+
+        try {
+
+            for (ContentValues cv : values){
+
+                db.insertOrThrow(ContractClass.News.TABLE_NAME, null, cv);
+
+                nrInserted++;
+            }
+
+            db.setTransactionSuccessful();
+            db.endTransaction();
+
+
+        } catch (SQLException ex){
+
+            ex.printStackTrace();
+
+        }
+        finally {
+            getContext().getContentResolver().notifyChange(uri,null);
+
+        }
+
+        return nrInserted;
     }
 
     @Nullable
