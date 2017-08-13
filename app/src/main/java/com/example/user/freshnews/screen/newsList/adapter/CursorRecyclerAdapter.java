@@ -1,4 +1,4 @@
-package com.example.user.freshnews.adapter;
+package com.example.user.freshnews.screen.newsList.adapter;
 /*
  * The MIT License (MIT)
  *

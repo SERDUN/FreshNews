@@ -1,4 +1,4 @@
-package com.example.user.freshnews.data.database;
+package com.example.user.freshnews.data.provider;
 
 import android.net.Uri;
 import android.provider.BaseColumns;

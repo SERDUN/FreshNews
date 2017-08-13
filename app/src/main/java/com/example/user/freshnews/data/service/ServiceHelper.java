@@ -1,4 +1,4 @@
-package com.example.user.freshnews.data.database;
+package com.example.user.freshnews.data.service;
 
 import android.content.Context;
 import android.content.Intent;

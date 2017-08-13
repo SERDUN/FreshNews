@@ -1,4 +1,4 @@
-package com.example.user.freshnews.adapter;
+package com.example.user.freshnews.screen.newsList.adapter;
 
 import android.database.Cursor;
 import android.support.v7.widget.RecyclerView;
@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.user.freshnews.R;
-import com.example.user.freshnews.data.database.ContractClass;
+import com.example.user.freshnews.data.provider.ContractClass;
 
 /**
  * Created by SERDUN on 09.08.2017.

@@ -1,4 +1,4 @@
-package com.example.user.freshnews.data.database;
+package com.example.user.freshnews.data.provider;
 
 import android.content.ContentProvider;
 import android.content.ContentUris;
@@ -13,6 +13,8 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+
+import com.example.user.freshnews.data.service.ServiceHelper;
 
 import java.util.HashMap;
 
@@ -273,13 +275,6 @@ public class NewsProvider extends ContentProvider {
         @Override
         public void onCreate(SQLiteDatabase db) {
             db.execSQL(DATABASE_CREATE_TABLE_NEWS);
-            db.execSQL("insert into news values (null, 'auth test1', 'Title test', 'description', 'URL', 'IMG_IRL', 'DATA');");
-            db.execSQL("insert into news values (null, 'auth test2', 'Title test', 'description', 'URL', 'IMG_IRL', 'DATA');");
-            db.execSQL("insert into news values (null, 'auth tes3t', 'Title test', 'description', 'URL', 'IMG_IRL', 'DATA');");
-            db.execSQL("insert into news values (null, 'auth test4', 'Title test', 'description', 'URL', 'IMG_IRL', 'DATA');");
-            db.execSQL("insert into news values (null, 'auth test5', 'Title test', 'description', 'URL', 'IMG_IRL', 'DATA');");
-            db.execSQL("insert into news values (null, 'auth test6', 'Title test', 'description', 'URL', 'IMG_IRL', 'DATA');");
-
         }
 
         @Override
