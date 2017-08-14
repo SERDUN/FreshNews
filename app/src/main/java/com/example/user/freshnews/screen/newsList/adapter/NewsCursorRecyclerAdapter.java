@@ -29,6 +29,7 @@ public class NewsCursorRecyclerAdapter extends CursorRecyclerAdapter<NewsCursorR
     public void onBindViewHolder(ViewHolder holder, Cursor cursor) {
         holder.tvTitle.setText(cursor.getString(cursor.getColumnIndex(ContractClass.News.COLUMN_NAME_TITLE)));
         holder.tvDescription.setText(cursor.getString(cursor.getColumnIndex(ContractClass.News.COLUMN_NAME_DESCRIPTION)));
+        holder.tvDate.setText(cursor.getString(cursor.getColumnIndex(ContractClass.News.COLUMN_NAME_PUBLISHED_AT)));
         Picasso.with(context).load(cursor.getString(cursor.getColumnIndex(ContractClass.News.COLUMN_NAME_URL_TO_IMAGE))).into(holder.imageView);
 
     }
@@ -46,12 +47,14 @@ public class NewsCursorRecyclerAdapter extends CursorRecyclerAdapter<NewsCursorR
         TextView tvTitle;
         ImageView imageView;
         TextView tvDescription;
+        TextView tvDate;
 
         public ViewHolder(View itemView) {
             super(itemView);
             tvTitle = (TextView) itemView.findViewById(R.id.tv_title);
             tvDescription = (TextView) itemView.findViewById(R.id.tv_description);
             imageView = (ImageView) itemView.findViewById(R.id.iv_news);
+            tvDate = (TextView) itemView.findViewById(R.id.tv_date);
 
         }
     }

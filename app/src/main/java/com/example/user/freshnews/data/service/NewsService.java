@@ -12,6 +12,8 @@ import com.example.user.freshnews.data.provider.ContractClass;
 import com.example.user.freshnews.network.NewsConnectionFactory;
 import com.example.user.freshnews.utils.Const;
 
+import java.util.ArrayList;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -36,9 +38,11 @@ public class NewsService extends Service {
         c.enqueue(new Callback<CurrentNews>() {
             @Override
             public void onResponse(Call<CurrentNews> call, Response<CurrentNews> response) {
-                for (News n : response.body().getNewses()) {
-                    getContentResolver().insert(ContractClass.News.CONTENT_URI, createContentValues(n));
-                }
+                ArrayList<ContentValues> buffer=new ArrayList<>();
+                    for(int i=response.body().getNewses().size()-1;i>-1;i--)
+                    buffer.add(createContentValues(response.body().getNewses().get(i)));
+                 getContentResolver().bulkInsert(ContractClass.News.CONTENT_URI, buffer.toArray(new ContentValues[buffer.size()]));
+
                 broadcastIntent.putExtra(Const.BroadcastConst.STATUS, Const.BroadcastConst.STATUS_OK);
                 sendBroadcast(broadcastIntent);
                 stopSelf();

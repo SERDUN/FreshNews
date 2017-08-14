@@ -99,22 +99,26 @@ public class NewsProvider extends ContentProvider {
     }
 
 
-
     @Override
     public int bulkInsert(@NonNull Uri uri, @NonNull ContentValues[] values) {
         if (uriMatcher.match(uri) != NEWS) {
             throw new IllegalArgumentException("Unknown URI " + uri);
         }
         int nrInserted = 0;
+        long rowId = -1;
+        Uri rowUri = Uri.EMPTY;
+
 
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.beginTransaction();
 
         try {
 
-            for (ContentValues cv : values){
+            for (ContentValues cv : values) {
 
-                db.insertOrThrow(ContractClass.News.TABLE_NAME, null, cv);
+//                db.insertOrThrow(ContractClass.News.TABLE_NAME, null, cv);
+
+                rowId = db.insertOrThrow(ContractClass.News.TABLE_NAME, null, cv);
 
                 nrInserted++;
             }
@@ -123,16 +127,20 @@ public class NewsProvider extends ContentProvider {
             db.endTransaction();
 
 
-        } catch (SQLException ex){
+        } catch (SQLException ex) {
 
             ex.printStackTrace();
 
-        }
-        finally {
-            getContext().getContentResolver().notifyChange(uri,null);
+        } finally {
 
         }
 
+        if (rowId > 0) {
+
+//            rowUri = ContentUris.withAppendedId(ContractClass.News.CONTENT_ID_URI_BASE, rowId);
+            rowUri = ContentUris.withAppendedId(ContractClass.News.CONTENT_ID_URI_BASE, rowId);
+            getContext().getContentResolver().notifyChange(rowUri, null);
+        }
         return nrInserted;
     }
 
@@ -181,7 +189,7 @@ public class NewsProvider extends ContentProvider {
 
             rowId = db.insert(ContractClass.News.TABLE_NAME, null, values);
 
-            Log.d("item_size", "insert: "+rowId);
+            Log.d("item_size", "insert: " + rowId);
 
             if (rowId > 0) {
                 rowUri = ContentUris.withAppendedId(ContractClass.News.CONTENT_ID_URI_BASE, rowId);

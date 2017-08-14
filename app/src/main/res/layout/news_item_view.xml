@@ -61,6 +61,13 @@
                     android:visibility="visible"
                     card_view:srcCompat="@drawable/news_icon" />
 
+                <TextView
+                    android:id="@+id/tv_date"
+
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="date" />
+
             </LinearLayout>
 
             <LinearLayout

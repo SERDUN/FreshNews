@@ -10,7 +10,7 @@ import retrofit2.http.GET;
  */
 
 public interface NewsApiService {
-    @GET("v1/articles?source=the-times-of-india&sortBy=top")
+    @GET("v1/articles?source=the-times-of-india&sortBy=latest")
     public Call<CurrentNews> getNews();
 //    public Call<CurrentNews> getNews(@Query("source") String sources,@Query("sortBy") String sortBy);
 }

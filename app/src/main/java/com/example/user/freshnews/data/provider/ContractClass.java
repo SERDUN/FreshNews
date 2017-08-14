@@ -30,7 +30,7 @@ public class ContractClass {
         public static final Uri CONTENT_ID_URI_BASE = Uri.parse(SCHEME + AUTHORITY + PATH_NEWS_ID);
         public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.google.news";
         public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.google.news";
-        public static final String DEFAULT_SORT_ORDER = "publishedAt DESC limit 30  ";
+        public static final String DEFAULT_SORT_ORDER = "_id DESC limit 10 ";
 
         public static final String COLUMN_NAME_AUTHOR = "author";
         public static final String COLUMN_NAME_TITLE = "title";
