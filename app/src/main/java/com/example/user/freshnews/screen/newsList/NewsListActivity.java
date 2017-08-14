@@ -23,6 +23,7 @@ public class NewsListActivity extends AppCompatActivity implements NewsListContr
     private NewsObserver newsObserver;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private NewsCursorRecyclerAdapter adapter;
+    private boolean localData = false;
 
     final String LOG_TAG = "myLogs";
 
@@ -32,7 +33,10 @@ public class NewsListActivity extends AppCompatActivity implements NewsListContr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        presenter = new NewsListPresenter(this, getContentResolver());
+        if(savedInstanceState!=null){
+            localData =savedInstanceState.getBoolean(Const.IS_ROTATE);
+        }
+        presenter = new NewsListPresenter(this, getContentResolver(), localData);
         initBroadcastService();
         initView();
     }
@@ -56,12 +60,19 @@ public class NewsListActivity extends AppCompatActivity implements NewsListContr
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new NewsCursorRecyclerAdapter(presenter.getCachedNews());
+        adapter = new NewsCursorRecyclerAdapter(presenter.getCachedNews(),this);
         recyclerView.setAdapter(adapter);
 //        newsObserver = new NewsObserver(new Handler(), () ->
 //                mSwipeRefreshLayout.setRefreshing(false), adapter, getContentResolver());
 
 
+    }
+
+
+
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putBoolean(Const.IS_ROTATE, true);
     }
 
     @Override
@@ -89,6 +100,11 @@ public class NewsListActivity extends AppCompatActivity implements NewsListContr
         presenter.showNews(presenter.getCachedNews());
     }
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(br);
+        adapter.getCursor().close();
+    }
 }
 

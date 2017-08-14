@@ -14,10 +14,12 @@ import com.example.user.freshnews.utils.Const;
 public class NewsListPresenter implements NewsListContract.Presenter {
     private NewsListContract.View view;
     private ContentResolver contentResolver;
+    private boolean localStroge=false;
 
-    public NewsListPresenter(NewsListContract.View view, ContentResolver contentResolver) {
+    public NewsListPresenter(NewsListContract.View view, ContentResolver contentResolver,boolean storage) {
         this.view = view;
         this.contentResolver = contentResolver;
+        this.localStroge=storage;
     }
 
     @Override
@@ -63,11 +65,20 @@ public class NewsListPresenter implements NewsListContract.Presenter {
     }
 
     private Cursor getCursor(Uri URI) {
-        return contentResolver.query(
+        if(localStroge){
+            URI=ContractClass.News.CONTENT_URI;
+            localStroge=false;
+        }
+
+
+        Cursor cursor= contentResolver.query(
                 URI,
                 ContractClass.News.DEFAULT_PROJECTION,
                 null, null,
-                null);
+                ContractClass.News.DEFAULT_SORT_ORDER);
+
+
+        return cursor;
 
     }
 }

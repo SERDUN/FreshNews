@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="fab_margin">10dp</dimen>
+    <dimen name="button_margin">10dp</dimen>
+    <dimen name="container_top_margin">60dp</dimen>
+    <dimen name="height_button">50dp</dimen>
+
+    <dimen name="card_margin">5dp</dimen>
+    <dimen name="card_radius">5dp</dimen>
+    <dimen name="height_avatar_view">160dp</dimen>
+    <dimen name="username_padding">10dp</dimen>
+    <dimen name="username_size">15dp</dimen>
+    <dimen name="overflow_width">20dp</dimen>
+    <dimen name="overflow_height">30dp</dimen>
+    <dimen name="padding_bottom">5dp</dimen>
+
+
+</resources>

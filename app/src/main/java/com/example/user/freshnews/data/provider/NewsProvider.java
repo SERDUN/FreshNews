@@ -13,6 +13,7 @@ import android.database.sqlite.SQLiteQueryBuilder;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.example.user.freshnews.data.service.ServiceHelper;
 
@@ -79,7 +80,7 @@ public class NewsProvider extends ContentProvider {
         }
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor c = qb.query(db, projection, selection, selectionArgs, null, null, null);
+        Cursor c = qb.query(db, projection, selection, selectionArgs, null, null, sortOrder);
         c.setNotificationUri(getContext().getContentResolver(), uri);
         return c;
     }
@@ -179,6 +180,8 @@ public class NewsProvider extends ContentProvider {
 
 
             rowId = db.insert(ContractClass.News.TABLE_NAME, null, values);
+
+            Log.d("item_size", "insert: "+rowId);
 
             if (rowId > 0) {
                 rowUri = ContentUris.withAppendedId(ContractClass.News.CONTENT_ID_URI_BASE, rowId);
