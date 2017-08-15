@@ -1,19 +1,19 @@
 package com.example.user.freshnews.screen.newsList;
 
+import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
-import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.user.freshnews.R;
 import com.example.user.freshnews.data.provider.ContractClass;
@@ -21,7 +21,6 @@ import com.example.user.freshnews.screen.newsList.adapter.NewsCursorRecyclerAdap
 import com.example.user.freshnews.screen.newsList.listener.NewsObserver;
 import com.example.user.freshnews.utils.Const;
 
-import java.util.Random;
 
 
 public class NewsListActivity extends AppCompatActivity implements NewsListContract.View, SwipeRefreshLayout.OnRefreshListener {
@@ -31,11 +30,10 @@ public class NewsListActivity extends AppCompatActivity implements NewsListContr
     private NewsCursorRecyclerAdapter adapter;
     private boolean localData = false;
 
-    final String LOG_TAG = "myLogs";
+
 
     BroadcastReceiver br;
 
-    private Button addNews;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,25 +47,6 @@ public class NewsListActivity extends AppCompatActivity implements NewsListContr
         initView();
 
 
-        addNews = (Button) findViewById(R.id.btnAddNews);
-        addNews.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Random random = new Random();
-
-
-                ContentValues value1 = new ContentValues();
-                value1.put(ContractClass.News.COLUMN_NAME_AUTHOR, "flush11");
-                value1.put(ContractClass.News.COLUMN_NAME_TITLE, "\"flush\" title11");
-                value1.put(ContractClass.News.COLUMN_NAME_DESCRIPTION, "\"gdrgrd\"" + random.nextInt());
-                value1.put(ContractClass.News.COLUMN_NAME_URL, "url");
-                value1.put(ContractClass.News.COLUMN_NAME_URL_TO_IMAGE, "url_img");
-                value1.put(ContractClass.News.COLUMN_NAME_PUBLISHED_AT, "2017-08-14T18:37:00Z");
-
-                getContentResolver().insert(ContractClass.News.CONTENT_URI, value1);
-
-            }
-        });
     }
 
     private void initObservers() {
@@ -94,7 +73,16 @@ public class NewsListActivity extends AppCompatActivity implements NewsListContr
 
         recyclerView = (RecyclerView) findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new NewsCursorRecyclerAdapter(presenter.getCachedNews(), this);
+        adapter = new NewsCursorRecyclerAdapter(presenter.getCachedNews(), this, url -> {
+            try {
+                Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                startActivity(myIntent);
+            } catch (ActivityNotFoundException e) {
+                Toast.makeText(this, "No application can handle this request."
+                        + " Please install a webbrowser", Toast.LENGTH_LONG).show();
+                e.printStackTrace();
+            }
+        });
         recyclerView.setAdapter(adapter);
 
 
@@ -125,6 +113,10 @@ public class NewsListActivity extends AppCompatActivity implements NewsListContr
         adapter.swapCursor(news);
 
     }
+
+    @Override
+    public void showMessage(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();    }
 
     @Override
     public void onRefresh() {

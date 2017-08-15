@@ -12,6 +12,7 @@ import com.example.user.freshnews.screen.BaseView;
 public class NewsListContract {
     interface View extends BaseView {
         public void updateListView(Cursor cursor);
+        public void showMessage(String msg);
 
     }
 

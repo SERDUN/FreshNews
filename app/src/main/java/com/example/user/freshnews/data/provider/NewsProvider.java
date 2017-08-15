@@ -4,6 +4,7 @@ import android.content.ContentProvider;
 import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.content.UriMatcher;
 import android.database.Cursor;
 import android.database.SQLException;
@@ -16,6 +17,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.example.user.freshnews.data.service.ServiceHelper;
+import com.example.user.freshnews.utils.Const;
 
 import java.util.HashMap;
 
@@ -134,12 +136,21 @@ public class NewsProvider extends ContentProvider {
         } finally {
 
         }
+        Intent broadcastIntent = new Intent(Const.BroadcastConst.BROADCAST_ACTION);
 
         if (rowId > 0) {
 
 //            rowUri = ContentUris.withAppendedId(ContractClass.News.CONTENT_ID_URI_BASE, rowId);
             rowUri = ContentUris.withAppendedId(ContractClass.News.CONTENT_ID_URI_BASE, rowId);
             getContext().getContentResolver().notifyChange(rowUri, null);
+            broadcastIntent.putExtra(Const.BroadcastConst.STATUS, Const.BroadcastConst.STATUS_OK);
+            getContext().sendBroadcast(broadcastIntent);
+
+        }else {
+            broadcastIntent.putExtra(Const.BroadcastConst.STATUS, Const.BroadcastConst.STATUS_NOT_UPDATE);
+            getContext().sendBroadcast(broadcastIntent);
+
+
         }
         return nrInserted;
     }
@@ -194,6 +205,12 @@ public class NewsProvider extends ContentProvider {
             if (rowId > 0) {
                 rowUri = ContentUris.withAppendedId(ContractClass.News.CONTENT_ID_URI_BASE, rowId);
                 getContext().getContentResolver().notifyChange(rowUri, null);
+            }else {
+                Intent broadcastIntent = new Intent(Const.BroadcastConst.BROADCAST_ACTION);
+                broadcastIntent.putExtra(Const.BroadcastConst.STATUS, Const.BroadcastConst.STATUS_NOT_UPDATE);
+                getContext().sendBroadcast(broadcastIntent);
+
+
             }
         }
 

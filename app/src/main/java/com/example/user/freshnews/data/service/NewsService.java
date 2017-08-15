@@ -4,7 +4,6 @@ import android.app.Service;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.os.IBinder;
-import android.util.Log;
 
 import com.example.user.freshnews.data.model.CurrentNews;
 import com.example.user.freshnews.data.model.News;
@@ -19,38 +18,30 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class NewsService extends Service {
-    private Intent broadcastIntent;
 
     @Override
     public void onCreate() {
         super.onCreate();
 
-        Log.d("myLog", "onCreate: ");
     }
 
-    final String LOG_TAG = "myLogs";
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        broadcastIntent = new Intent(Const.BroadcastConst.BROADCAST_ACTION);
 
         Call<CurrentNews> c = NewsConnectionFactory.getService().getNews();
         c.enqueue(new Callback<CurrentNews>() {
             @Override
             public void onResponse(Call<CurrentNews> call, Response<CurrentNews> response) {
-                ArrayList<ContentValues> buffer=new ArrayList<>();
-                    for(int i=response.body().getNewses().size()-1;i>-1;i--)
+                ArrayList<ContentValues> buffer = new ArrayList<>();
+                for (int i = response.body().getNewses().size() - 1; i > -1; i--)
                     buffer.add(createContentValues(response.body().getNewses().get(i)));
-                 getContentResolver().bulkInsert(ContractClass.News.CONTENT_URI, buffer.toArray(new ContentValues[buffer.size()]));
-
-                broadcastIntent.putExtra(Const.BroadcastConst.STATUS, Const.BroadcastConst.STATUS_OK);
-                sendBroadcast(broadcastIntent);
-                stopSelf();
-
+                getContentResolver().bulkInsert(ContractClass.News.CONTENT_URI, buffer.toArray(new ContentValues[buffer.size()]));
             }
 
             @Override
             public void onFailure(Call<CurrentNews> call, Throwable t) {
+                Intent broadcastIntent = new Intent(Const.BroadcastConst.BROADCAST_ACTION);
                 broadcastIntent.putExtra(Const.BroadcastConst.STATUS, Const.BroadcastConst.STATUS_FAILURE);
                 sendBroadcast(broadcastIntent);
             }

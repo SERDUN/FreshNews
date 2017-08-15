@@ -37,7 +37,7 @@ public class NewsObserver extends ContentObserver {
                 null);
 
 
-        //если елементов больше 30 удаляем остальное
+        //если элементов больше 30 удаляем остальное
      if (c != null) {
             if (c.getCount() > COUNT_SAVE_ELEMENT) {
                 String ob="_id IN (SELECT _id FROM "+ContractClass.News.TABLE_NAME+" ORDER BY _id ASC LIMIT "+(c.getCount()-COUNT_SAVE_ELEMENT)+")";

@@ -49,14 +49,17 @@ public class NewsListPresenter implements NewsListContract.Presenter {
                 break;
             case Const.BroadcastConst.STATUS_NOT_UPDATE:
                 view.hideLoadingView();
-
+                view.showMessage("no update");
                 break;
             case Const.BroadcastConst.STATUS_NOT_CONNECTION:
                 view.hideLoadingView();
-
+                view.showMessage("error connection");
+                view.hideLoadingView();
                 break;
             case Const.BroadcastConst.STATUS_FAILURE:
                 view.hideLoadingView();
+                view.showMessage("error connection");
+
 
                 break;
 
