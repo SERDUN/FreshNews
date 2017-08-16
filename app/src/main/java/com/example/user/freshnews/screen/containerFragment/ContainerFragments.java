@@ -13,14 +13,15 @@ import com.example.user.freshnews.screen.fragment.fragmentList.NewsListFragment;
 
 
 public class ContainerFragments extends AppCompatActivity implements ContainerFragmentsContract.View, NewsListFragment.OnFragmentInteractionListener {
-    ContainerFragmentsContract.Presenter presenter;
-    DetailsNewsFragment details;
-    boolean withDetails = true;
+    private ContainerFragmentsContract.Presenter presenter;
+    private DetailsNewsFragment details;
+    private boolean withDetails = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         presenter = new ContainerFragmentsPresenter(this, withDetails);
     }
 
@@ -37,7 +38,7 @@ public class ContainerFragments extends AppCompatActivity implements ContainerFr
 
 
     @Override
-    public void startIntent(String url) {
+    public void openBrowser(String url) {
         try {
             Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
             startActivity(myIntent);

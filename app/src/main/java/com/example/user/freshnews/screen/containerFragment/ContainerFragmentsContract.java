@@ -11,7 +11,8 @@ import com.example.user.freshnews.screen.BaseView;
 
 public class ContainerFragmentsContract {
     interface View extends BaseView {
-        void startIntent(String url);
+        void openBrowser(String url);
+
         void showDetailsNews(String url);
     }
 
@@ -23,5 +24,7 @@ public class ContainerFragmentsContract {
         String getUrlForDetailsNews();
 
         void loadDetailsMewsInTabletMode(boolean is);
+
+
     }
 }

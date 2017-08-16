@@ -6,4 +6,5 @@ package com.example.user.freshnews.screen;
 
 public interface BasePresenter {
     public void init();
+
 }

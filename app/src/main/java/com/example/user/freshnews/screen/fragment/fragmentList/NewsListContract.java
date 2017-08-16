@@ -22,11 +22,12 @@ public class NewsListContract {
     interface Presenter extends BasePresenter {
         public void startIntent(String uri);
 
-        public Cursor getCachedNews();
+        public Cursor getRemoteNews(boolean usRemoteData);
 
         public void showNews(Cursor cursor);
 
         public void handleStatus(int status);
+
 
     }
 }

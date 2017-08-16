@@ -14,12 +14,12 @@ import com.example.user.freshnews.utils.Const;
 public class NewsListPresenter implements NewsListContract.Presenter {
     private NewsListContract.View view;
     private ContentResolver contentResolver;
-    private boolean localStroge=false;
 
-    public NewsListPresenter(NewsListContract.View view, ContentResolver contentResolver, boolean storage) {
+//    private boolean localStroge=false;
+
+    public NewsListPresenter(NewsListContract.View view, ContentResolver contentResolver) {
         this.view = view;
         this.contentResolver = contentResolver;
-        this.localStroge=storage;
     }
 
     @Override
@@ -34,9 +34,13 @@ public class NewsListPresenter implements NewsListContract.Presenter {
     }
 
     @Override
-    public Cursor getCachedNews() {
-        return getCursor(
-                ContractClass.News.CONTENT_URI_SERVER);
+    public Cursor getRemoteNews(boolean usRemoteNews) {
+        if (usRemoteNews) {
+            return getCursor(
+                    ContractClass.News.CONTENT_URI_SERVER);
+        } else
+            return getCursor(
+                    ContractClass.News.CONTENT_URI);
 
     }
 
@@ -70,12 +74,12 @@ public class NewsListPresenter implements NewsListContract.Presenter {
     }
 
     private Cursor getCursor(Uri URI) {
-        if(localStroge){
-            URI=ContractClass.News.CONTENT_URI;
-            localStroge=false;
-        }
+//        if(localStroge){
+//            URI=ContractClass.News.CONTENT_URI;
+//            localStroge=false;
+//        }
 
-        Cursor cursor= contentResolver.query(
+        Cursor cursor = contentResolver.query(
                 URI,
                 ContractClass.News.DEFAULT_PROJECTION,
                 null, null,

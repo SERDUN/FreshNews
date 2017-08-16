@@ -28,53 +28,34 @@ public class NewsListFragment extends Fragment implements NewsListContract.View,
     private NewsListContract.Presenter presenter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
     private NewsCursorRecyclerAdapter adapter;
-    private boolean localData = false;
-    BroadcastReceiver br;
-
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
+    private BroadcastReceiver br;
     private OnFragmentInteractionListener mListener;
 
     public NewsListFragment() {
-        // Required empty public constructor
     }
 
-    public static NewsListFragment newInstance(String param1, String param2) {
+    public static NewsListFragment newInstance() {
         NewsListFragment fragment = new NewsListFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
         return fragment;
     }
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_news_list, container, false);
-        if (savedInstanceState != null) {
-            localData = savedInstanceState.getBoolean(Const.IS_ROTATE);
-        }
-        presenter = new NewsListPresenter(this, getContext().getContentResolver(), localData);
+        presenter = new NewsListPresenter(this, getContext().getContentResolver());
+        initAdapter(savedInstanceState);
         initObservers();
         initView(view);
-
         return view;
+    }
+
+    private void initAdapter(Bundle usRemoteData) {
+        boolean remoteData = false;
+        if (usRemoteData == null) remoteData = true;
+        adapter = new NewsCursorRecyclerAdapter(presenter.getRemoteNews(remoteData), getContext(), url ->
+                presenter.startIntent(url));
     }
 
     private void initObservers() {
@@ -97,12 +78,8 @@ public class NewsListFragment extends Fragment implements NewsListContract.View,
     private void initView(View view) {
         mSwipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.refresh);
         mSwipeRefreshLayout.setOnRefreshListener(this);
-
-
         recyclerView = (RecyclerView) view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new NewsCursorRecyclerAdapter(presenter.getCachedNews(), getContext(), url ->
-                presenter.startIntent(url));
         recyclerView.setAdapter(adapter);
 
 
@@ -123,11 +100,6 @@ public class NewsListFragment extends Fragment implements NewsListContract.View,
     public void onDetach() {
         super.onDetach();
         mListener = null;
-    }
-
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        outState.putBoolean(Const.IS_ROTATE, true);
     }
 
     @Override
@@ -164,7 +136,7 @@ public class NewsListFragment extends Fragment implements NewsListContract.View,
 
     @Override
     public void onRefresh() {
-        presenter.showNews(presenter.getCachedNews());
+        presenter.showNews(presenter.getRemoteNews(false));
     }
 
     @Override
