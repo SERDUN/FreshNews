@@ -13,9 +13,9 @@
     </fragment>
 
     <fragment
-        android:name="com.example.user.freshnews.screen.fragment.fragmentDetails.DeatilsNewsFragment"
+        android:name="com.example.user.freshnews.screen.fragment.fragmentDetails.DetailsNewsFragment"
         android:layout_weight="1"
-        android:id="@+id/newsDetail"
+        android:id="@+id/fm_details_news"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

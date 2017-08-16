@@ -11,7 +11,7 @@ import android.webkit.WebViewClient;
 
 import com.example.user.freshnews.R;
 
-public class DeatilsNewsFragment extends Fragment {
+public class DetailsNewsFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -26,7 +26,7 @@ public class DeatilsNewsFragment extends Fragment {
 
     private OnFragmentInteractionListener mListener;
 
-    public DeatilsNewsFragment() {
+    public DetailsNewsFragment() {
         // Required empty public constructor
     }
 
@@ -36,11 +36,11 @@ public class DeatilsNewsFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment DeatilsNewsFragment.
+     * @return A new instance of fragment DetailsNewsFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static DeatilsNewsFragment newInstance(String param1, String param2) {
-        DeatilsNewsFragment fragment = new DeatilsNewsFragment();
+    public static DetailsNewsFragment newInstance(String param1, String param2) {
+        DetailsNewsFragment fragment = new DetailsNewsFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);

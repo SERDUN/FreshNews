@@ -9,12 +9,14 @@ import com.example.user.freshnews.screen.BaseView;
  * Created by User on 16.08.2017.
  */
 
-public class ContainerFragmentContract {
-     interface View extends BaseView {
-
+public class ContainerFragmentsContract {
+    interface View extends BaseView {
+        void showDetailsNews();
     }
 
-     interface Presenter extends BasePresenter {
-         boolean checkExistenceView(Window v, int id);
+    interface Presenter extends BasePresenter {
+        boolean checkExistenceView(Window v, int id);
+
+        void useTabletMode(boolean is);
     }
 }
