@@ -6,16 +6,15 @@
     android:layout_height="match_parent">
 
     <fragment
-        android:name="com.example.user.freshnews.screen.fragment.fragmentList.NewsList"
+        android:name="com.example.user.freshnews.screen.fragment.fragmentList.NewsListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1">
     </fragment>
 
-    <fragment
-        android:name="com.example.user.freshnews.screen.fragment.fragmentDetails.DetailsNewsFragment"
+    <FrameLayout
         android:layout_weight="1"
-        android:id="@+id/fm_details_news"
+        android:id="@+id/fl_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 

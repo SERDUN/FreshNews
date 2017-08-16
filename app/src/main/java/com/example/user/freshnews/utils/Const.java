@@ -6,6 +6,7 @@ package com.example.user.freshnews.utils;
 
 public class Const {
     public final static String IS_ROTATE = "isRotatw";
+    public static final String DETAILS_NEWS_PREF = "details_news_pref";
 
     public class BroadcastConst {
         public final static String BROADCAST_ACTION = "com.example.user.freshnews.brodcast_response";

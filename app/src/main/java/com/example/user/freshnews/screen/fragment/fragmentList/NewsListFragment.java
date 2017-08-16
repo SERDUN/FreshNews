@@ -1,12 +1,10 @@
 package com.example.user.freshnews.screen.fragment.fragmentList;
 
-import android.content.ActivityNotFoundException;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -25,7 +23,7 @@ import com.example.user.freshnews.screen.fragment.fragmentList.listener.NewsObse
 import com.example.user.freshnews.utils.Const;
 
 
-public class NewsList extends Fragment implements NewsListContract.View, SwipeRefreshLayout.OnRefreshListener {
+public class NewsListFragment extends Fragment implements NewsListContract.View, SwipeRefreshLayout.OnRefreshListener {
     private RecyclerView recyclerView;
     private NewsListContract.Presenter presenter;
     private SwipeRefreshLayout mSwipeRefreshLayout;
@@ -42,12 +40,12 @@ public class NewsList extends Fragment implements NewsListContract.View, SwipeRe
 
     private OnFragmentInteractionListener mListener;
 
-    public NewsList() {
+    public NewsListFragment() {
         // Required empty public constructor
     }
 
-    public static NewsList newInstance(String param1, String param2) {
-        NewsList fragment = new NewsList();
+    public static NewsListFragment newInstance(String param1, String param2) {
+        NewsListFragment fragment = new NewsListFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -110,22 +108,15 @@ public class NewsList extends Fragment implements NewsListContract.View, SwipeRe
 
     }
 
-
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-//        if (context instanceof OnFragmentInteractionListener) {
-//            mListener = (OnFragmentInteractionListener) context;
-//        } else {
-//            throw new RuntimeException(context.toString()
-//                    + " must implement OnFragmentInteractionListener");
-//        }
+        if (context instanceof OnFragmentInteractionListener) {
+            mListener = (OnFragmentInteractionListener) context;
+        } else {
+            throw new RuntimeException(context.toString()
+                    + " must implement OnFragmentInteractionListener");
+        }
     }
 
     @Override
@@ -166,13 +157,8 @@ public class NewsList extends Fragment implements NewsListContract.View, SwipeRe
 
     @Override
     public void startIntent(String url) {
-        try {
-            Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-            startActivity(myIntent);
-        } catch (ActivityNotFoundException e) {
-            Toast.makeText(getContext(), "No application can handle this request."
-                    + " Please install a webbrowser", Toast.LENGTH_LONG).show();
-            e.printStackTrace();
+        if (mListener != null) {
+            mListener.openDetails(url);
         }
     }
 
@@ -190,7 +176,6 @@ public class NewsList extends Fragment implements NewsListContract.View, SwipeRe
 
 
     public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void openDetails(String url);
     }
 }

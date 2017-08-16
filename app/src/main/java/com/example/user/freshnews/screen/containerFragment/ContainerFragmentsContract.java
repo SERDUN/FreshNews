@@ -11,12 +11,16 @@ import com.example.user.freshnews.screen.BaseView;
 
 public class ContainerFragmentsContract {
     interface View extends BaseView {
-        void showDetailsNews();
+        void showDetailsNews(String url);
     }
 
     interface Presenter extends BasePresenter {
         boolean checkExistenceView(Window v, int id);
 
-        void useTabletMode(boolean is);
+        void saveUrlForDetailsNews(String url);
+
+        String getUrlForDetailsNews();
+
+        void loadDetailsMewsInTabletMode(boolean is);
     }
 }

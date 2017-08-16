@@ -19,10 +19,13 @@ public class DetailsNewsFragment extends Fragment {
 
     private WebView mWebView;
 
+    private String url = null;
+
+    public String getUrl() {
+        return url;
+    }
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
 
     private OnFragmentInteractionListener mListener;
 
@@ -30,20 +33,11 @@ public class DetailsNewsFragment extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment DetailsNewsFragment.
-     */
     // TODO: Rename and change types and number of parameters
-    public static DetailsNewsFragment newInstance(String param1, String param2) {
+    public static DetailsNewsFragment newInstance(String url) {
         DetailsNewsFragment fragment = new DetailsNewsFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_PARAM1, url);
         fragment.setArguments(args);
         return fragment;
     }
@@ -52,8 +46,7 @@ public class DetailsNewsFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            url = getArguments().getString(ARG_PARAM1);
         }
     }
 
@@ -61,15 +54,16 @@ public class DetailsNewsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view= inflater.inflate(R.layout.fragment_deatils_news, container, false);
+        View view = inflater.inflate(R.layout.fragment_deatils_news, container, false);
         mWebView = (WebView) view.findViewById(R.id.web);
         // включаем поддержку JavaScript
         mWebView.getSettings().setJavaScriptEnabled(true);
         mWebView.setWebViewClient(new MyWebViewClient());
 
         // указываем страницу загрузки
-        mWebView.loadUrl("http://developer.alexanderklimov.ru/android");
-        return  view;
+        if (url != null)
+            mWebView.loadUrl(url);
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -111,11 +105,9 @@ public class DetailsNewsFragment extends Fragment {
         void onFragmentInteraction(Uri uri);
     }
 
-    private class MyWebViewClient extends WebViewClient
-    {
+    private class MyWebViewClient extends WebViewClient {
         @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url)
-        {
+        public boolean shouldOverrideUrlLoading(WebView view, String url) {
             view.loadUrl(url);
             return true;
         }
