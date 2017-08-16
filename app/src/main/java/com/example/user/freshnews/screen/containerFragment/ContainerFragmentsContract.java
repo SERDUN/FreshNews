@@ -11,6 +11,8 @@ import com.example.user.freshnews.screen.BaseView;
 
 public class ContainerFragmentsContract {
     interface View extends BaseView {
+        void startIntent(String url);
+
         void showDetailsNews(String url);
     }
 

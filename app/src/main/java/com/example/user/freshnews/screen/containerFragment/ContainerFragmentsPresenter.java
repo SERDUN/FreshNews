@@ -45,5 +45,6 @@ public class ContainerFragmentsPresenter implements ContainerFragmentsContract.P
     @Override
     public void loadDetailsMewsInTabletMode(boolean is) {
         if (is) view.showDetailsNews(getUrlForDetailsNews());
+        else view.startIntent(getUrlForDetailsNews());
     }
 }

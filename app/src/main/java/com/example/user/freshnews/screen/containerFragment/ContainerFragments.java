@@ -40,6 +40,20 @@ public class ContainerFragments extends AppCompatActivity implements ContainerFr
 
     }
 
+
+    @Override
+    public void startIntent(String url) {
+        try {
+            Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+            startActivity(myIntent);
+        } catch (ActivityNotFoundException e) {
+            Toast.makeText(this, "No application can handle this request."
+                    + " Please install a webbrowser", Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+        }
+
+    }
+
     @Override
     public void showDetailsNews(String url) {
         if (presenter.checkExistenceView(getWindow(), R.id.fl_container)) {
@@ -50,15 +64,6 @@ public class ContainerFragments extends AppCompatActivity implements ContainerFr
                 getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fl_container, details).commit();
 
-            } else {
-                try {
-                    Intent myIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                    startActivity(myIntent);
-                } catch (ActivityNotFoundException e) {
-                    Toast.makeText(this, "No application can handle this request."
-                            + " Please install a webbrowser", Toast.LENGTH_LONG).show();
-                    e.printStackTrace();
-                }
             }
 
         }
@@ -71,5 +76,7 @@ public class ContainerFragments extends AppCompatActivity implements ContainerFr
 
 
     }
+
+
 }
 
