@@ -1,4 +1,4 @@
-package com.example.user.freshnews.screen.newsList.adapter;
+package com.example.user.freshnews.screen.fragment.fragmentList.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -12,7 +12,7 @@ import android.widget.TextView;
 
 import com.example.user.freshnews.R;
 import com.example.user.freshnews.data.provider.ContractClass;
-import com.example.user.freshnews.screen.newsList.listener.ListenerNewsList;
+import com.example.user.freshnews.screen.fragment.fragmentList.listener.ListenerNewsList;
 import com.squareup.picasso.Picasso;
 
 /**

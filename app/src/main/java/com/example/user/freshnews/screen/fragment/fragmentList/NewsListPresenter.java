@@ -1,4 +1,4 @@
-package com.example.user.freshnews.screen.newsList;
+package com.example.user.freshnews.screen.fragment.fragmentList;
 
 import android.content.ContentResolver;
 import android.database.Cursor;
@@ -16,7 +16,7 @@ public class NewsListPresenter implements NewsListContract.Presenter {
     private ContentResolver contentResolver;
     private boolean localStroge=false;
 
-    public NewsListPresenter(NewsListContract.View view, ContentResolver contentResolver,boolean storage) {
+    public NewsListPresenter(NewsListContract.View view, ContentResolver contentResolver, boolean storage) {
         this.view = view;
         this.contentResolver = contentResolver;
         this.localStroge=storage;
@@ -27,6 +27,11 @@ public class NewsListPresenter implements NewsListContract.Presenter {
 
     }
 
+
+    @Override
+    public void startIntent(String url) {
+        view.startIntent(url);
+    }
 
     @Override
     public Cursor getCachedNews() {

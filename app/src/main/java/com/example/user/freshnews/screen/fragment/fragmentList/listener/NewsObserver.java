@@ -1,4 +1,4 @@
-package com.example.user.freshnews.screen.newsList.listener;
+package com.example.user.freshnews.screen.fragment.fragmentList.listener;
 
 import android.content.ContentResolver;
 import android.database.ContentObserver;
