@@ -4,6 +4,13 @@
     android:layout_height="match_parent"
     tools:context="com.example.user.freshnews.screen.fragment.fragmentDetails.DetailsNewsFragment">
 
+    <TextView
+        android:id="@+id/tv_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal|center_vertical"
+        android:text="You did not select the news" />
+
     <ProgressBar
 
         android:id="@+id/pb_loading_page"
@@ -11,14 +18,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal|center_vertical"
-        />
+        android:visibility="gone" />
 
     <WebView
         android:id="@+id/web"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:visibility="gone" >
+        android:visibility="gone">
 
     </WebView>
 

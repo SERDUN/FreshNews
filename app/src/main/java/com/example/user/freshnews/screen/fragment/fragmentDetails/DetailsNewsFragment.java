@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.example.user.freshnews.R;
 
@@ -18,6 +19,7 @@ public class DetailsNewsFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private ProgressBar pbLoadingPage;
     private WebView mWebView;
+    private TextView tvMessage;
     private String url = "";
 
     public void setUrl(String url) {
@@ -69,13 +71,15 @@ public class DetailsNewsFragment extends Fragment {
         mWebView.getSettings().setJavaScriptEnabled(true);
         pbLoadingPage = (ProgressBar) view.findViewById(R.id.pb_loading_page);
         mWebView.setWebViewClient(new MyWebViewClient());
+        tvMessage = (TextView) view.findViewById(R.id.tv_message);
 
     }
 
     public void loadPage() {
-        if (url != null)
+        if (!url.isEmpty()){
             mWebView.loadUrl(url);
-    }
+            tvMessage.setVisibility(View.GONE);
+    }}
 
     private class MyWebViewClient extends WebViewClient {
         @Override
