@@ -12,18 +12,13 @@
         android:layout_weight="1">
     </fragment>
 
-    <FrameLayout
+    <fragment
         android:layout_weight="1"
+        android:name="com.example.user.freshnews.screen.fragment.fragmentDetails.DetailsNewsFragment"
         android:id="@+id/fl_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <TextView
-            android:id="@+id/tv_news_message"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center_horizontal|center_vertical"
-            android:text="Ви не вибрали новость"/>
-    </FrameLayout>
+    </fragment>
 
 
 </LinearLayout>

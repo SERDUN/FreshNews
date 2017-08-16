@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:id="@+id/line1"
     android:orientation="vertical"
-    tools:context=".screen.containerFragment.NewsListActivity">
+    tools:context=".screen.containerFragment.ContainerFragments">
     <fragment
         android:name="com.example.user.freshnews.screen.fragment.fragmentList.NewsListFragment"
         android:layout_width="match_parent"

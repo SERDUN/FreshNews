@@ -3,6 +3,7 @@ package com.example.user.freshnews.screen.fragment.fragmentDetails;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,11 @@ public class DetailsNewsFragment extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private ProgressBar pbLoadingPage;
     private WebView mWebView;
-    private String url = null;
+    private String url = "";
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
 
     public static DetailsNewsFragment newInstance(String url) {
         DetailsNewsFragment fragment = new DetailsNewsFragment();
@@ -67,7 +72,7 @@ public class DetailsNewsFragment extends Fragment {
 
     }
 
-    private void loadPage() {
+    public void loadPage() {
         if (url != null)
             mWebView.loadUrl(url);
     }
@@ -92,6 +97,14 @@ public class DetailsNewsFragment extends Fragment {
             view.loadUrl(url);
             return true;
         }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.d("live_activity", "onDestroyFragment: ");
+
+        mWebView.stopLoading();
     }
 
 

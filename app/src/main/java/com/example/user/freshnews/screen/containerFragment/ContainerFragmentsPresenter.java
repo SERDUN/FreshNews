@@ -1,6 +1,5 @@
 package com.example.user.freshnews.screen.containerFragment;
 
-import android.content.SharedPreferences;
 import android.view.Window;
 
 /**
@@ -10,15 +9,13 @@ import android.view.Window;
 public class ContainerFragmentsPresenter implements ContainerFragmentsContract.Presenter {
     private boolean withDetails = true;
     private ContainerFragmentsContract.View view;
-    private SharedPreferences preferences;
     private String url = null;
 
 //    private final String KEY_URL_OPEN_DETAILS = "keyUrlOpenDetails";
 
-    public ContainerFragmentsPresenter(ContainerFragmentsContract.View view, boolean withDetails, SharedPreferences preferences) {
+    public ContainerFragmentsPresenter(ContainerFragmentsContract.View view, boolean withDetails) {
         this.withDetails = withDetails;
         this.view = view;
-        this.preferences = preferences;
     }
 
     @Override
