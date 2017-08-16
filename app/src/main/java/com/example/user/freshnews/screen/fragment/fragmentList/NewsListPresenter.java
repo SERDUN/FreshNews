@@ -64,10 +64,7 @@ public class NewsListPresenter implements NewsListContract.Presenter {
             case Const.BroadcastConst.STATUS_FAILURE:
                 view.hideLoadingView();
                 view.showMessage("error connection");
-
-
                 break;
-
         }
 
     }
@@ -77,7 +74,6 @@ public class NewsListPresenter implements NewsListContract.Presenter {
             URI=ContractClass.News.CONTENT_URI;
             localStroge=false;
         }
-
 
         Cursor cursor= contentResolver.query(
                 URI,
